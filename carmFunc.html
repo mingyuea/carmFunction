@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        #intro{
+            position:relative;
+            margin:10px;
+            line-height:150%;
+        }
+    </style>
+    <body>
+        <h2>Computing the Carmichael Function</h2>
+        <div id="intro">
+            This was another puzzle I saw in Code Golf, which involves a little bit of number theory. From this problem, I learned a little about Euclidean algorithms when writing my function to find the greatest common divisor. Javascript was suprisingly lacking in the mathematical area. I used the GCD function to find numbers that were coprime to each other (i.e. numbers who's greatest common divisor is 1). From there, a number's Carmichael function is such that, any of said number's coprimes to the power of the Carmicael function mod said number is equal to one. My explanation on Carmichael functions might not be the best, for those still confused here is the <a href="https://en.wikipedia.org/wiki/Carmichael_function">Wikipedia entry for Carmichael functions</a>.<br> NOTE: Computing a number too big or with too many coprime might freeze your browser, because of the size of the computations
+            
+        </div>
+        <br><br>
+        <div id="wrapper">
+        <p>Enter a number to calculate it's Carmichael function</p>
+        <input type="text" id="num" name="num1" value="">
+        <button onclick="carmichaelFunc()">Calculate</button>
+        <p> The Carmichael function for this number is: </p>
+        <p id="answer"> </p>
+        </div>
+        
+        <script>
+            var coprimes=[];
+            var power=1;
+            var carm=false;
+            
+            function gcd(a,b){
+                if(b){
+                    return gcd(b, a%b);
+                }
+                else{
+                    return Math.abs(a)
+                }
+            }
+                 
+            function carmichaelFunc(){
+                coprimes=[];
+                power=1;
+                carm=false;
+                var num=document.getElementById("num").value;
+                
+                for(i=1;i<num;i++){
+                    if(gcd(num,i)==1){
+                        coprimes.push(i);
+                    }
+                }
+                console.log(coprimes);
+                
+                while(!carm){
+                    var carmNo=[];
+                    for(i=0;i<coprimes.length;i++){
+                       var  moduli=(Math.pow(coprimes[i],power)%num);
+                        if(moduli==1){
+                            carmNo.push(power);
+                        }
+                    }
+                    if(carmNo.length==coprimes.length){
+                        carm=true;
+                    }
+                    console.log(power);
+                    power++;
+                }
+                 document.getElementById("answer").innerHTML=carmNo[0];
+            }
+        </script>
+    </body>
+</html>
